@@ -4,13 +4,22 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { createTheme } from '@mui/material/styles';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import MapIcon from '@mui/icons-material/Map';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import Dashboard from './pages/Dashboard';
+import Map from './pages/Map';
+import Charts from './pages/Charts';
 
 const NAVIGATION = [
   {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
+    segment: 'map',
+    title: 'Map',
+    icon: <MapIcon />,
+  },
+  {
+    segment: 'charts',
+    title: 'Charts',
+    icon: <BarChartIcon />,
   },
 ];
 
@@ -36,11 +45,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Dashboard />,
+        element: <Map />,
       },
       {
         path: 'dashboard',
         element: <Dashboard />,
+      },
+      {
+        path: 'map',
+        element: <Map />,
+      },
+      {
+        path: 'charts',
+        element: <Charts />,
       },
     ],
   },
