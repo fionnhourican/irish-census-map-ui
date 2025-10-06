@@ -17,7 +17,7 @@ export default function Map() {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', p: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h4">
           Irish speakers in longford
@@ -50,7 +50,9 @@ export default function Map() {
           </MenuItem>
         </Menu>
       </Box>
-      <TableauReact />
+      <Box sx={{ flex: 1 }}>
+        <TableauReact />
+      </Box>
     </Box>
   );
 }

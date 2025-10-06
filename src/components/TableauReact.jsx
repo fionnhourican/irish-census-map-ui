@@ -28,7 +28,7 @@ class TableauReact extends Component {
         ref={(div) => {
           this.vizContainer = div;
         }}
-        style={{ width: '1000px', height: '800px' }}
+        style={{ width: '100%', height: '100%' }}
       />
     );
   }
