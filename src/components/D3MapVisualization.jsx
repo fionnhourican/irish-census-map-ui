@@ -30,7 +30,7 @@ export default function D3MapVisualization({ onTownlandClick }) {
 
         const colorScale = window.d3.scaleSequential()
           .domain([0, window.d3.max(data.features, d => d.properties.population_count)])
-          .interpolator(window.d3.interpolateYlOrRd);
+          .interpolator(window.d3.interpolateRgb("#f8f9fb", "#1a365d"));
 
         const tooltip = window.d3.select('body').append('div')
           .attr('class', 'tooltip')
