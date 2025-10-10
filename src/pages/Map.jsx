@@ -3,11 +3,13 @@ import { Typography, Box, IconButton, Menu, MenuItem, TextField, Stack, Button, 
 import FilterListIcon from '@mui/icons-material/FilterList';
 import D3MapVisualization from '../components/D3MapVisualization';
 import TownlandDetailsPanel from '../components/TownlandDetailsPanel';
+import TownlandDetails from '../components/TownlandDetails';
 
 export default function Map() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedTownland, setSelectedTownland] = useState(null);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
+  const [viewMode, setViewMode] = useState('map');
   const mapContainerRef = useRef(null);
   
   // Basic filters
@@ -42,7 +44,12 @@ export default function Map() {
   }, []);
 
   const handleMoreInfo = useCallback((townland) => {
-    console.log('More info for:', townland.ENG_NAME_VALUE);
+    setViewMode('townland');
+  }, []);
+
+  const handleBackToMap = useCallback(() => {
+    setViewMode('map');
+    setSelectedTownland(null);
   }, []);
 
   useEffect(() => {
@@ -262,17 +269,24 @@ export default function Map() {
           </MenuItem>
         </Menu>
       </Box>
-      <Box sx={{ flex: 1, display: 'flex', gap: 2 }} ref={mapContainerRef}>
-        <D3MapVisualization 
-          onTownlandClick={handleTownlandClick} 
-          selectedTownlandId={selectedTownland?.OBJECTID}
-        />
-        <TownlandDetailsPanel 
+      {viewMode === 'map' ? (
+        <Box sx={{ flex: 1, display: 'flex', gap: 2 }} ref={mapContainerRef}>
+          <D3MapVisualization 
+            onTownlandClick={handleTownlandClick} 
+            selectedTownlandId={selectedTownland?.OBJECTID}
+          />
+          <TownlandDetailsPanel 
+            townland={selectedTownland}
+            onClose={() => setSelectedTownland(null)}
+            onMoreInfo={handleMoreInfo}
+          />
+        </Box>
+      ) : (
+        <TownlandDetails 
           townland={selectedTownland}
-          onClose={() => setSelectedTownland(null)}
-          onMoreInfo={handleMoreInfo}
+          onBackToMap={handleBackToMap}
         />
-      </Box>
+      )}
     </Box>
   );
 }
