@@ -1,10 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 
-export default function D3MapVisualization({ onTownlandClick }) {
+export default function D3MapVisualization({ onTownlandClick, selectedTownlandId }) {
   const svgRef = useRef(null);
+  const mapInitialized = useRef(false);
 
+  // Initialize map only once
   useEffect(() => {
+    if (mapInitialized.current) return;
+    
     const loadD3 = async () => {
       if (!window.d3) {
         const d3Script = document.createElement('script');
@@ -69,6 +73,7 @@ export default function D3MapVisualization({ onTownlandClick }) {
             onTownlandClick(d.properties);
           });
 
+        mapInitialized.current = true;
       } catch (error) {
         console.error('Error loading data:', error);
       }
@@ -76,6 +81,24 @@ export default function D3MapVisualization({ onTownlandClick }) {
 
     loadD3();
   }, [onTownlandClick]);
+
+  // Update selection styling only
+  useEffect(() => {
+    if (!mapInitialized.current || !window.d3) return;
+    
+    const svg = window.d3.select(svgRef.current);
+    svg.selectAll('path')
+      .transition()
+      .duration(300)
+      .attr('stroke-width', d => {
+        if (!selectedTownlandId) return 0.8;
+        return d.properties.OBJECTID === selectedTownlandId ? 3 : 0.8;
+      })
+      .attr('stroke', d => {
+        if (!selectedTownlandId) return '#666666';
+        return d.properties.OBJECTID === selectedTownlandId ? '#ff6b35' : '#666666';
+      });
+  }, [selectedTownlandId]);
 
   return (
     <Box sx={{ flex: 1 }}>

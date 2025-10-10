@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Typography, Box, IconButton, Menu, MenuItem, TextField, Stack, Button, Select, FormControl, InputLabel } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import D3MapVisualization from '../components/D3MapVisualization';
@@ -8,6 +8,7 @@ export default function Map() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedTownland, setSelectedTownland] = useState(null);
   const [showMoreFilters, setShowMoreFilters] = useState(false);
+  const mapContainerRef = useRef(null);
   
   // Basic filters
   const [surname, setSurname] = useState('');
@@ -43,6 +44,19 @@ export default function Map() {
   const handleMoreInfo = useCallback((townland) => {
     console.log('More info for:', townland.ENG_NAME_VALUE);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mapContainerRef.current && !mapContainerRef.current.contains(event.target) && selectedTownland) {
+        setSelectedTownland(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [selectedTownland]);
 
   return (
     <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column', p: 2 }}>
@@ -248,8 +262,11 @@ export default function Map() {
           </MenuItem>
         </Menu>
       </Box>
-      <Box sx={{ flex: 1, display: 'flex', gap: 2 }}>
-        <D3MapVisualization onTownlandClick={handleTownlandClick} />
+      <Box sx={{ flex: 1, display: 'flex', gap: 2 }} ref={mapContainerRef}>
+        <D3MapVisualization 
+          onTownlandClick={handleTownlandClick} 
+          selectedTownlandId={selectedTownland?.OBJECTID}
+        />
         <TownlandDetailsPanel 
           townland={selectedTownland}
           onClose={() => setSelectedTownland(null)}
