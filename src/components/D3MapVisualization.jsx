@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
+import { censusService } from '../services/censusService';
 
 export default function D3MapVisualization({ onTownlandClick, selectedTownlandId }) {
   const svgRef = useRef(null);
@@ -25,7 +26,7 @@ export default function D3MapVisualization({ onTownlandClick, selectedTownlandId
       window.d3.selectAll('.tooltip').remove();
 
       try {
-        const data = await window.d3.json('/Example5.json');
+        const data = await censusService.getGeoData();
         
         const projection = window.d3.geoMercator()
           .fitSize([width, height], data);
