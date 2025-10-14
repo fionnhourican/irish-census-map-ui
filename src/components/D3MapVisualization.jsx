@@ -28,8 +28,8 @@ export default function D3MapVisualization({ onTownlandClick, selectedTownlandId
       window.d3.selectAll('.tooltip').remove();
 
       try {
-        setIsLoading(true);
         const data = await censusService.getGeoData();
+        setIsLoading(false);
         
         const projection = window.d3.geoMercator()
           .fitSize([width, height], data);
@@ -78,7 +78,6 @@ export default function D3MapVisualization({ onTownlandClick, selectedTownlandId
           });
 
         mapInitialized.current = true;
-        setIsLoading(false);
       } catch (error) {
         console.error('Error loading data:', error);
         setIsLoading(false);
