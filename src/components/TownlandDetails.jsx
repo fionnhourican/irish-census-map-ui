@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Breadcrumbs, Link, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import LoadingSpinner from './LoadingSpinner';
+import { censusService } from '../services/censusService';
 
 export default function TownlandDetails({ townland, onBackToMap }) {
-  // Mock data for people matching the query
-  const people = [
+  const [people, setPeople] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTownlandDetails = async () => {
+      if (!townland?.OBJECTID) return;
+      
+      try {
+        setIsLoading(true);
+        const data = await censusService.getTownlandDetails(townland.OBJECTID);
+        setPeople(data.people || []);
+      } catch (error) {
+        console.error('Error fetching townland details:', error);
+        // Fallback to mock data
+        setPeople(mockPeople);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTownlandDetails();
+  }, [townland?.OBJECTID]);
+
+  // Mock data fallback
+  const mockPeople = [
     {
       id: 1,
       surname: 'O\'Sullivan',
@@ -42,6 +67,10 @@ export default function TownlandDetails({ townland, onBackToMap }) {
       relationship: 'Head'
     }
   ];
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Box sx={{ flex: 1, p: 3 }}>

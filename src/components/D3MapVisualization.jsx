@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import { censusService } from '../services/censusService';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function D3MapVisualization({ onTownlandClick, selectedTownlandId }) {
   const svgRef = useRef(null);
   const mapInitialized = useRef(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Initialize map only once
   useEffect(() => {
@@ -26,6 +28,7 @@ export default function D3MapVisualization({ onTownlandClick, selectedTownlandId
       window.d3.selectAll('.tooltip').remove();
 
       try {
+        setIsLoading(true);
         const data = await censusService.getGeoData();
         
         const projection = window.d3.geoMercator()
@@ -75,8 +78,10 @@ export default function D3MapVisualization({ onTownlandClick, selectedTownlandId
           });
 
         mapInitialized.current = true;
+        setIsLoading(false);
       } catch (error) {
         console.error('Error loading data:', error);
+        setIsLoading(false);
       }
     };
 
@@ -102,8 +107,9 @@ export default function D3MapVisualization({ onTownlandClick, selectedTownlandId
   }, [selectedTownlandId]);
 
   return (
-    <Box sx={{ flex: 1 }}>
-      <svg ref={svgRef} style={{ width: '100%', height: '100%' }} />
+    <Box sx={{ flex: 1, position: 'relative' }}>
+      {isLoading && <LoadingSpinner />}
+      <svg ref={svgRef} style={{ width: '100%', height: '100%', opacity: isLoading ? 0 : 1 }} />
     </Box>
   );
 }
