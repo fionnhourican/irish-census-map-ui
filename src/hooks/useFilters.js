@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 export const useFilters = () => {
+  const [censusYear, setCensusYear] = useState('');
   const [surname, setSurname] = useState('');
   const [forename, setForename] = useState('');
   const [age, setAge] = useState('');
@@ -17,13 +18,13 @@ export const useFilters = () => {
   const [childrenLiving, setChildrenLiving] = useState('');
 
   const filters = {
-    surname, forename, age, sex, occupation, countyOrigin,
+    censusYear, surname, forename, age, sex, occupation, countyOrigin,
     religion, literacy, maritalStatus, relationship,
     specifiedIllnesses, yearsMarried, childrenBorn, childrenLiving
   };
 
   const setters = {
-    setSurname, setForename, setAge, setSex, setOccupation, setCountyOrigin,
+    setCensusYear, setSurname, setForename, setAge, setSex, setOccupation, setCountyOrigin,
     setReligion, setLiteracy, setMaritalStatus, setRelationship,
     setSpecifiedIllnesses, setYearsMarried, setChildrenBorn, setChildrenLiving
   };

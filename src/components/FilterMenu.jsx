@@ -14,6 +14,19 @@ export default function FilterMenu({ anchorEl, onClose, filters, setters }) {
     >
       <MenuItem>
         <Stack spacing={2} sx={{ p: 1, width: '100%' }}>
+          <FormControl size="small" fullWidth>
+            <InputLabel>Census Year</InputLabel>
+            <Select
+              value={filters.censusYear}
+              label="Census Year"
+              onChange={(e) => setters.setCensusYear(e.target.value)}
+            >
+              <MenuItem value="">All Years</MenuItem>
+              {FILTER_OPTIONS.censusYear.map(option => (
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             label="Surname"
             size="small"
@@ -33,12 +46,6 @@ export default function FilterMenu({ anchorEl, onClose, filters, setters }) {
             value={filters.age}
             onChange={(e) => setters.setAge(e.target.value)}
           />
-          <TextField
-            label="County"
-            size="small"
-            value="Longford"
-            disabled
-          />
           
           {showMoreFilters && (
             <>
@@ -55,21 +62,15 @@ export default function FilterMenu({ anchorEl, onClose, filters, setters }) {
                   ))}
                 </Select>
               </FormControl>
-              <TextField
-                label="Occupation"
-                size="small"
-                value={filters.occupation}
-                onChange={(e) => setters.setOccupation(e.target.value)}
-              />
               <FormControl size="small" fullWidth>
-                <InputLabel>County/Country of Origin</InputLabel>
+                <InputLabel>Relationship to Head of Household</InputLabel>
                 <Select
-                  value={filters.countyOrigin}
-                  label="County/Country of Origin"
-                  onChange={(e) => setters.setCountyOrigin(e.target.value)}
+                  value={filters.relationship}
+                  label="Relationship to Head of Household"
+                  onChange={(e) => setters.setRelationship(e.target.value)}
                 >
                   <MenuItem value="">All</MenuItem>
-                  {FILTER_OPTIONS.countyOrigin.map(option => (
+                  {FILTER_OPTIONS.relationship.map(option => (
                     <MenuItem key={option} value={option}>{option}</MenuItem>
                   ))}
                 </Select>
@@ -100,6 +101,12 @@ export default function FilterMenu({ anchorEl, onClose, filters, setters }) {
                   ))}
                 </Select>
               </FormControl>
+              <TextField
+                label="Occupation"
+                size="small"
+                value={filters.occupation}
+                onChange={(e) => setters.setOccupation(e.target.value)}
+              />
               <FormControl size="small" fullWidth>
                 <InputLabel>Marital Status</InputLabel>
                 <Select
@@ -114,14 +121,14 @@ export default function FilterMenu({ anchorEl, onClose, filters, setters }) {
                 </Select>
               </FormControl>
               <FormControl size="small" fullWidth>
-                <InputLabel>Relationship to Head</InputLabel>
+                <InputLabel>County/Country of Origin</InputLabel>
                 <Select
-                  value={filters.relationship}
-                  label="Relationship to Head"
-                  onChange={(e) => setters.setRelationship(e.target.value)}
+                  value={filters.countyOrigin}
+                  label="County/Country of Origin"
+                  onChange={(e) => setters.setCountyOrigin(e.target.value)}
                 >
                   <MenuItem value="">All</MenuItem>
-                  {FILTER_OPTIONS.relationship.map(option => (
+                  {FILTER_OPTIONS.countyOrigin.map(option => (
                     <MenuItem key={option} value={option}>{option}</MenuItem>
                   ))}
                 </Select>

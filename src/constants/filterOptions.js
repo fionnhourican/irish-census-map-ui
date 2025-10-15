@@ -1,4 +1,5 @@
 export const FILTER_OPTIONS = {
+  censusYear: ['1901', '1911'],
   sex: ['Male', 'Female'],
   countyOrigin: ['Longford', 'Dublin', 'Cork', 'Galway', 'Mayo', 'England', 'Scotland', 'America'],
   religion: ['Roman Catholic', 'Church of Ireland', 'Presbyterian', 'Methodist', 'Baptist', 'Other'],
